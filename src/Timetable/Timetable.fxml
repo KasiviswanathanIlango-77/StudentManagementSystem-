@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="720.0" prefWidth="1280.0" 
+            style="-fx-background-color: #f8fafc;" 
+            xmlns="http://javafx.com/javafx/26" 
+            xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="Timetable.TimetableController">
+
+    <!-- ================= TOP NAVIGATION ================= -->
+    <top>
+        <HBox alignment="CENTER_LEFT" 
+              prefHeight="60.0" 
+              spacing="20.0" 
+              style="-fx-background-color: #1565C0; -fx-border-color: #c5c7bc; -fx-border-width: 0 0 2 0;">
+
+            <padding>
+                <Insets bottom="8.0" left="10.0" right="20.0" top="8.0" />
+            </padding>
+
+            <!-- Logo -->
+            <ImageView fitHeight="56.0" fitWidth="70.0" preserveRatio="true">
+                <image>
+                    <Image url="@images/klnclg_logo.jpg" />
+                </image>
+            </ImageView>
+
+            <!-- Title - Grows to fill space -->
+            <Label alignment="CENTER" 
+                   contentDisplay="CENTER" 
+                   maxWidth="1.7976931348623157E308" 
+                   text="STUDENT MANAGEMENT SYSTEM" 
+                   textFill="WHITE" 
+                   HBox.hgrow="ALWAYS">
+                <font>
+                    <Font name="System Bold Italic" size="24.0" />
+                </font>
+            </Label>
+
+            <!-- Logout -->
+            <Button fx:id="logoutButton" 
+                    onAction="#navigatetoLogin" 
+                    prefHeight="45.0" 
+                    prefWidth="140.0" 
+                    style="-fx-background-color: #d5d5d5; -fx-text-fill: #1F2937; -fx-font-size: 16px; -fx-background-radius: 6; -fx-cursor: hand;" 
+                    text="Logout" />
+
+        </HBox>
+    </top>
+
+    <!-- ================= LEFT SIDEBAR ================= -->
+    <left>
+        <VBox prefWidth="250.0" 
+              spacing="5.0" 
+              style="-fx-background-color: #1565C0; -fx-border-color: #d0d0d0; -fx-border-width: 0 1 0 0;">
+
+            <padding>
+                <Insets left="5.0" right="5.0" top="20.0" />
+            </padding>
+
+            <!-- Dashboard -->
+            <Button fx:id="dashboardButton" 
+                    alignment="CENTER_LEFT" 
+                    onAction="#gotoDashboard" 
+                    prefHeight="50.0" 
+                    prefWidth="250.0" 
+                    style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 16px; -fx-cursor: hand;" 
+                    text="📊  Dashboard" />
+
+            <!-- Student Admission -->
+            <Button fx:id="studentsButton" 
+                    alignment="CENTER_LEFT" 
+                    onAction="#admissionButton" 
+                    prefHeight="50.0" 
+                    prefWidth="250.0" 
+                    style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 16px; -fx-cursor: hand;" 
+                    text="🧾  Student Admission">
+                <VBox.margin>
+                    <Insets top="10.0" />
+                </VBox.margin>
+            </Button>
+
+            <!-- Student Records -->
+            <Button fx:id="studentRecordsButton" 
+                    alignment="CENTER_LEFT" 
+                    onAction="#recordsButton" 
+                    prefHeight="50.0" 
+                    prefWidth="250.0" 
+                    style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 16px; -fx-cursor: hand;" 
+                    text="📄  Student Records">
+                <VBox.margin>
+                    <Insets top="10.0" />
+                </VBox.margin>
+            </Button>
+
+            <!-- Timetable ACTIVE -->
+            <Button fx:id="timetableButton" 
+                    alignment="CENTER_LEFT" 
+                    prefHeight="50.0" 
+                    prefWidth="250.0" 
+                    style="-fx-background-color: #2C5EAD; -fx-text-fill: white; -fx-font-size: 16px; -fx-cursor: hand;" 
+                    text="🕒  Timetable">
+                <VBox.margin>
+                    <Insets top="10.0" />
+                </VBox.margin>
+            </Button>
+
+            <!-- Attendance -->
+            <Button fx:id="attendanceButton" 
+                    alignment="CENTER_LEFT" 
+                    onAction="#attendanceButton" 
+                    prefHeight="50.0" 
+                    prefWidth="250.0" 
+                    style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 16px; -fx-cursor: hand;" 
+                    text="📅  Attendance">
+                <VBox.margin>
+                    <Insets top="10.0" />
+                </VBox.margin>
+            </Button>
+
+        </VBox>
+    </left>
+
+    <!-- ================= CENTER CONTENT ================= -->
+    <center>
+        <VBox spacing="20.0" 
+              style="-fx-padding: 25; -fx-background-color: #f8fafc;">
+
+            <!-- Title -->
+            <Label style="-fx-font-size: 28px; -fx-text-fill: #1F2937;" 
+                   text="TIMETABLE MANAGEMENT">
+                <font>
+                    <Font name="System Bold" size="28.0" />
+                </font>
+            </Label>
+
+            <!-- Filters Card -->
+            <VBox spacing="18.0" 
+                  style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 25; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0, 0, 4);">
+
+                <!-- Filters Row -->
+                <HBox alignment="CENTER_LEFT" spacing="30.0">
+                    <VBox spacing="8.0">
+                        <Label style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #374151;" 
+                               text="Semester :" />
+                        <ComboBox fx:id="semesterCombo" 
+                                  prefHeight="45.0" 
+                                  prefWidth="200.0" 
+                                  promptText="Select Semester" 
+                                  style="-fx-background-radius: 6; -fx-border-color: #D1D5DB; -fx-border-radius: 6;" />
+                    </VBox>
+
+                    <VBox spacing="8.0">
+                        <Label style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #374151;" 
+                               text="Section :" />
+                        <ComboBox fx:id="sectionCombo" 
+                                  prefHeight="45.0" 
+                                  prefWidth="200.0" 
+                                  promptText="Select Section" 
+                                  style="-fx-background-radius: 6; -fx-border-color: #D1D5DB; -fx-border-radius: 6;" />
+                    </VBox>
+
+                    <VBox spacing="8.0">
+                        <Label style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #374151;" 
+                               text="Academic Year :" />
+                        <ComboBox fx:id="academicYearComboBox" 
+                                  prefHeight="45.0" 
+                                  prefWidth="200.0" 
+                                  promptText="Select year" 
+                                  style="-fx-background-radius: 6; -fx-border-color: #D1D5DB; -fx-border-radius: 6;" />
+                    </VBox>
+
+                    <VBox alignment="BOTTOM_LEFT" spacing="8.0">
+                        <Button fx:id="viewButton" 
+                                onAction="#loadTimetable" 
+                                prefHeight="45.0" 
+                                prefWidth="120.0" 
+                                style="-fx-background-color: #2563EB; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 8; -fx-cursor: hand;" 
+                                text="VIEW">
+                            <VBox.margin>
+                                <Insets top="16.0" />
+                            </VBox.margin>
+                        </Button>
+                    </VBox>
+                     <Label style="-fx-font-size: 14px; -fx-text-fill: #DC2626; -fx-font-weight: bold;" 
+                               text="Break(10:55 - 11:10)" 
+                               />
+                     <Label style="-fx-font-size: 14px; -fx-text-fill: #DC2626; -fx-font-weight: bold;" 
+                               text="Lunch(12:50 - 01:30)" 
+                                />
+                </HBox>
+
+            </VBox>
+
+            <!-- Timetable Table -->
+            <TableView fx:id="timetableTable" 
+                       prefHeight="480.0" 
+                       style="-fx-font-size: 14px; -fx-border-color: #E5E7EB; -fx-border-radius: 8; -fx-background-radius: 8;">
+                <columns>
+                    <TableColumn fx:id="dayColumn" prefWidth="100.0" text="DAY" />
+                    <TableColumn fx:id="p1Column" prefWidth="160.0" text="Period1(9:15 - 10:05)" />
+                    <TableColumn fx:id="p2Column" prefWidth="160.0" text="Period2(10:05 - 10:55)" />
+                    <TableColumn fx:id="p3Column" prefWidth="160.0" text="Period3(11:10 - 12:00)" />
+                    <TableColumn fx:id="p4Column" prefWidth="160.0" text="Period4(12:00 - 12:50)" />
+                    <TableColumn fx:id="p5Column" prefWidth="160.0" text="Period5(01:30 - 02:20)" />
+                    <TableColumn fx:id="p6Column" prefWidth="160.0" text="Period6(02:20 - 03:10)" />
+                    <TableColumn fx:id="p7Column" prefWidth="160.0" text="Period7(03:10 - 04:00)" />
+                </columns>
+            </TableView>
+
+            <!-- Period Timings Card 
+            <VBox spacing="18.0" 
+                  style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 25; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0, 0, 4);">
+
+                <Label style="-fx-font-size: 18px; -fx-text-fill: #1565C0; -fx-font-weight: bold;" 
+                       text="PERIOD TIMINGS" />
+
+                <HBox alignment="CENTER" spacing="40.0">
+                    <GridPane hgap="15.0" vgap="10.0">
+                        <Label style="-fx-font-size: 14px; -fx-text-fill: #374151; -fx-font-weight: bold;" 
+                               text="1st Period" 
+                               GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <Label style="-fx-font-size: 14px; -fx-text-fill: #6B7280;" 
+                               text=":" 
+                               GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        <Label style="-fx-font-size: 14px; -fx-text-fill: #1F2937;" 
+                               text="" 
+                               GridPane.columnIndex="2" GridPane.rowIndex="0" />
+
+                        <Label style="-fx-font-size: 14px; -fx-text-fill: #374151; -fx-font-weight: bold;" 
+                               text="2nd Period" 
+                               GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <Label style="-fx-font-size: 14px; -fx-text-fill: #6B7280;" 
+                               text=":" 
+                               GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label style="-fx-font-size: 14px; -fx-text-fill: #1F2937;" 
+                               text="10:05 - 10:55" 
+                               GridPane.columnIndex="2" GridPane.rowIndex="1" />
+
+                       
+                        <Label style="-fx-font-size: 14px; -fx-text-fill: #6B7280;" 
+                               text=":" 
+                               GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label style="-fx-font-size: 14px; -fx-text-fill: #1F2937;" 
+                               text="" 
+                               GridPane.columnIndex="2" GridPane.rowIndex="2" />
+
+                        <columnConstraints>
+                            <ColumnConstraints />
+                            <ColumnConstraints />
+                            <ColumnConstraints />
+                        </columnConstraints>
+                        <rowConstraints>
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                        </rowConstraints>
+                    </GridPane>
+
+                    <GridPane hgap="15.0" vgap="10.0">
+                        <Label style="-fx-font-size: 14px; -fx-text-fill: #374151; -fx-font-weight: bold;" 
+                               text="3rd Period" 
+                               GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <Label style="-fx-font-size: 14px; -fx-text-fill: #6B7280;" 
+                               text=":" 
+                               GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        <Label style="-fx-font-size: 14px; -fx-text-fill: #1F2937;" 
+                               text="" 
+                               GridPane.columnIndex="2" GridPane.rowIndex="0" />
+
+                        <Label style="-fx-font-size: 14px; -fx-text-fill: #374151; -fx-font-weight: bold;" 
+                               text="4th Period" 
+                               GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <Label style="-fx-font-size: 14px; -fx-text-fill: #6B7280;" 
+                               text=":" 
+                               GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label style="-fx-font-size: 14px; -fx-text-fill: #1F2937;" 
+                               text="" 
+                               GridPane.columnIndex="2" GridPane.rowIndex="1" />
+
+                        
+                        <Label style="-fx-font-size: 14px; -fx-text-fill: #6B7280;" 
+                               text=":" 
+                               GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label style="-fx-font-size: 14px; -fx-text-fill: #1F2937;" 
+                               text="" 
+                               GridPane.columnIndex="2" GridPane.rowIndex="2" />
+
+                        <columnConstraints>
+                            <ColumnConstraints />
+                            <ColumnConstraints />
+                            <ColumnConstraints />
+                        </columnConstraints>
+                        <rowConstraints>
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                        </rowConstraints>
+                    </GridPane>
+
+                    <GridPane hgap="15.0" vgap="10.0">
+                        <Label style="-fx-font-size: 14px; -fx-text-fill: #374151; -fx-font-weight: bold;" 
+                               text="5th Period" 
+                               GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <Label style="-fx-font-size: 14px; -fx-text-fill: #6B7280;" 
+                               text=":" 
+                               GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        <Label style="-fx-font-size: 14px; -fx-text-fill: #1F2937;" 
+                               text="" 
+                               GridPane.columnIndex="2" GridPane.rowIndex="0" />
+
+                        <Label style="-fx-font-size: 14px; -fx-text-fill: #374151; -fx-font-weight: bold;" 
+                               text="6th Period" 
+                               GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <Label style="-fx-font-size: 14px; -fx-text-fill: #6B7280;" 
+                               text=":" 
+                               GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label style="-fx-font-size: 14px; -fx-text-fill: #1F2937;" 
+                               text="" 
+                               GridPane.columnIndex="2" GridPane.rowIndex="1" />
+
+                        <Label style="-fx-font-size: 14px; -fx-text-fill: #374151; -fx-font-weight: bold;" 
+                               text="7th Period" 
+                               GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <Label style="-fx-font-size: 14px; -fx-text-fill: #6B7280;" 
+                               text=":" 
+                               GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label style="-fx-font-size: 14px; -fx-text-fill: #1F2937;" 
+                               text="" 
+                               GridPane.columnIndex="2" GridPane.rowIndex="2" />
+
+                        <columnConstraints>
+                            <ColumnConstraints />
+                            <ColumnConstraints />
+                            <ColumnConstraints />
+                        </columnConstraints>
+                        <rowConstraints>
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                        </rowConstraints>
+                    </GridPane>
+                </HBox>
+
+            </VBox>
+                -->
+            <!-- Action Buttons -->
+            <HBox alignment="CENTER" spacing="30.0" style="-fx-padding: 20 0;">
+                <Button fx:id="saveButton" 
+                        onAction="#handleSave" 
+                        prefHeight="50.0" 
+                        prefWidth="200.0" 
+                        style="-fx-background-color: #2563EB; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold; -fx-background-radius: 8; -fx-cursor: hand;" 
+                        text="SAVE" />
+                
+                <Button fx:id="editButton" 
+                        onAction="#handleEdit" 
+                        prefHeight="50.0" 
+                        prefWidth="200.0" 
+                        style="-fx-background-color: #6B7280; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold; -fx-background-radius: 8; -fx-cursor: hand;" 
+                        text="EDIT" />
+            </HBox>
+
+        </VBox>
+    </center>
+
+</BorderPane>
